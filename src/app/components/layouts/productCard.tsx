@@ -3,6 +3,7 @@ import { ProductsProps } from "@/lib/interfaces/interface";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { ShoppingCart } from "lucide-react";
 export default function ProductCard({ products }: ProductsProps) {
   return (
     <div className="mt-10 mb-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -44,7 +45,7 @@ export default function ProductCard({ products }: ProductsProps) {
           {/* Footer */}
           <CardFooter className="mt-auto">
             <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
-              Add to Cart
+              <ShoppingCart /> Add to Cart
             </Button>
           </CardFooter>
         </Card>

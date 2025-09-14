@@ -2,6 +2,7 @@ import React from "react";
 import { ApiService } from "@/lib/services/ApiServices";
 import BrandCard from "@/app/components/layouts/BrandCard";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function Page() {
   const brands = await ApiService.getAllBrands();
@@ -30,9 +31,11 @@ export default async function Page() {
         <p className="text-gray-500">
           Browse our full product collection instead.
         </p>
-        <Button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white">
-          Shop All Products
-        </Button>
+        <Link href={"/products"}>
+          <Button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white">
+            Shop All Products
+          </Button>
+        </Link>
       </div>
     </section>
   );

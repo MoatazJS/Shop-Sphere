@@ -73,12 +73,12 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-blue-900 text-white px-4 py-3 space-y-3">
+        <div className="md:hidden bg-blue-900 text-white px-4 py-3 space-y-3 absolute w-full">
           <Link href="/products" className="block hover:text-orange-400">
             Products
           </Link>
-          <Link href="/brand" className="block hover:text-orange-400">
-            Brand
+          <Link href="/brands" className="block hover:text-orange-400">
+            Brands
           </Link>
           <Link href="/categories" className="block hover:text-orange-400">
             Categories
