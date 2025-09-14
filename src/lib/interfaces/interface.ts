@@ -3,8 +3,8 @@ export interface Category {
   name: string;
   slug: string;
   image: string;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  createdAt: string;
+  updatedAt: string;
   __v: number;
 }
 
@@ -43,8 +43,8 @@ export interface Product {
   category: Category;
   brand: Brand;
   ratingsAverage: number;
-  createdAt: string; // ISO date
-  updatedAt: string; // ISO date
+  createdAt: string;
+  updatedAt: string;
   id: string;
 }
 
@@ -52,7 +52,7 @@ export interface Metadata {
   currentPage: number;
   numberOfPages: number;
   limit: number;
-  nextPage?: number; // sometimes optional
+  nextPage?: number;
 }
 
 export interface ProductsResponse {
@@ -68,4 +68,26 @@ export interface Brand {
 }
 export interface ProductsProps {
   products: ProductsResponse;
+}
+export interface Brand {
+  _id: string;
+  name: string;
+  slug: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BrandsResponse {
+  results: number;
+  metadata: {
+    currentPage: number;
+    numberOfPages: number;
+    limit: number;
+    nextPage?: number;
+  };
+  data: Brand[];
+}
+export interface BrandsProps {
+  brands: BrandsResponse;
 }

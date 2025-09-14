@@ -24,8 +24,8 @@ export function Navbar() {
           <Link href="/products" className="hover:text-orange-500">
             Products
           </Link>
-          <Link href="/brand" className="hover:text-orange-500">
-            Brand
+          <Link href="/brands" className="hover:text-orange-500">
+            Brands
           </Link>
           <Link href="/categories" className="hover:text-orange-500">
             Categories

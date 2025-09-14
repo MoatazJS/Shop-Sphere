@@ -1,14 +1,14 @@
 import {
+  BrandsResponse,
   CategoriesResponse,
   ProductsResponse,
   SingleCategoryResponse,
 } from "../interfaces/interface";
 
 class ApiServices {
+  baseURL = "https://ecommerce.routemisr.com/api/v1/";
   async getAllCategories(): Promise<CategoriesResponse> {
-    const res = await fetch(
-      "https://ecommerce.routemisr.com/api/v1/categories"
-    );
+    const res = await fetch(this.baseURL + "categories");
     if (!res) {
       throw new Error("Failed to get categories");
     }
@@ -16,9 +16,7 @@ class ApiServices {
   }
 
   async getOneCategory(): Promise<SingleCategoryResponse> {
-    const res = await fetch(
-      `https://ecommerce.routemisr.com/api/v1/categories/{categoryId}`
-    );
+    const res = await fetch(this.baseURL + "categories/{categoryId}");
     if (!res) {
       throw new Error("Failed to fetch category");
     }
@@ -26,9 +24,17 @@ class ApiServices {
   }
 
   async getAllProducts(): Promise<ProductsResponse> {
-    const res = await fetch("https://ecommerce.routemisr.com/api/v1/products");
+    const res = await fetch(this.baseURL + "products");
     if (!res) {
       throw new Error("Failed to get products");
+    }
+    return res.json();
+  }
+
+  async getAllBrands(): Promise<BrandsResponse> {
+    const res = await fetch(this.baseURL + "brands");
+    if (!res) {
+      throw new Error("Failed to get brands");
     }
     return res.json();
   }
