@@ -3,10 +3,8 @@ import { ApiService } from "@/lib/services/ApiServices";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import CategoryCard from "@/app/components/layouts/categoryCard";
-
+const categories = await ApiService.getAllCategories();
 export default async function Page() {
-  const categories = await ApiService.getAllCategories();
-
   return (
     <section className="bg-gray-50 min-h-screen py-12">
       {/* Header */}

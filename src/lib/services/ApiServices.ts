@@ -16,8 +16,8 @@ class ApiServices {
     return res.json();
   }
 
-  async getOneCategory(): Promise<SingleCategoryResponse> {
-    const res = await fetch(this.baseURL + "categories/{categoryId}");
+  async getOneCategory(categoryId: string): Promise<SingleCategoryResponse> {
+    const res = await fetch(this.baseURL + `categories/${categoryId}`);
     if (!res) {
       throw new Error("Failed to fetch category");
     }
