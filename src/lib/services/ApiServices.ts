@@ -3,6 +3,7 @@ import {
   CategoriesResponse,
   ProductsResponse,
   SingleCategoryResponse,
+  SingleProductResponse,
 } from "../interfaces/interface";
 
 class ApiServices {
@@ -35,6 +36,14 @@ class ApiServices {
     const res = await fetch(this.baseURL + "brands");
     if (!res) {
       throw new Error("Failed to get brands");
+    }
+    return res.json();
+  }
+
+  async getOneProduct(id: string): Promise<SingleProductResponse> {
+    const res = await fetch(this.baseURL + `products/${id}`);
+    if (!res) {
+      throw new Error("Failed to get product details");
     }
     return res.json();
   }

@@ -91,3 +91,36 @@ export interface BrandsResponse {
 export interface BrandsProps {
   brands: BrandsResponse;
 }
+export interface ProductDetailsProps {
+  params: { id: string };
+}
+
+export interface Product {
+  sold: number;
+  images: string[];
+  subcategory: {
+    _id: string;
+    name: string;
+    slug: string;
+    category: string;
+  }[];
+  ratingsQuantity: number;
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  quantity: number;
+  price: number;
+  imageCover: string;
+  category: Category;
+  brand: Brand;
+  ratingsAverage: number;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  reviews: [];
+  id: string;
+}
+export interface SingleProductResponse {
+  data: Product;
+}
