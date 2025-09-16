@@ -2,6 +2,7 @@ import {
   BrandsResponse,
   CategoriesResponse,
   ProductsResponse,
+  SingleBrandResponse,
   SingleCategoryResponse,
   SingleProductResponse,
 } from "../interfaces/interface";
@@ -44,6 +45,13 @@ class ApiServices {
     const res = await fetch(this.baseURL + `products/${id}`);
     if (!res) {
       throw new Error("Failed to get product details");
+    }
+    return res.json();
+  }
+  async getSingleBrand(brandId: string): Promise<SingleBrandResponse> {
+    const res = await fetch(this.baseURL + `brands/${brandId}`);
+    if (!res) {
+      throw new Error("Failed to get brand details");
     }
     return res.json();
   }

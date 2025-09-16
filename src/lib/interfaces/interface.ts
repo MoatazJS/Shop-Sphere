@@ -124,3 +124,6 @@ export interface Product {
 export interface SingleProductResponse {
   data: Product;
 }
+export interface SingleBrandResponse {
+  data: Brand;
+}
