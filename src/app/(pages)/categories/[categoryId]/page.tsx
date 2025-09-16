@@ -3,7 +3,7 @@ import { ApiService } from "@/lib/services/ApiServices";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
+import { notFound } from "next/navigation";
 export default async function CategoryDetails({
   params,
 }: {
@@ -11,6 +11,9 @@ export default async function CategoryDetails({
 }) {
   const { categoryId } = await params;
   const res = await ApiService.getOneCategory(categoryId);
+  if (!res?.data) {
+    notFound();
+  }
   const categoryData = res.data;
   return (
     <>

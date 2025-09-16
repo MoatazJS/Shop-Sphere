@@ -1,7 +1,7 @@
 import { ApiService } from "@/lib/services/ApiServices";
 import Image from "next/image";
 import React from "react";
-
+import { notFound } from "next/navigation";
 export default async function DetailsPage({
   params,
 }: {
@@ -9,6 +9,10 @@ export default async function DetailsPage({
 }) {
   const { id } = await params; // ✅ await params
   const res = await ApiService.getOneProduct(id);
+  if (!res?.data) {
+    notFound();
+  }
+
   const product = res.data;
   console.log(product);
   return (

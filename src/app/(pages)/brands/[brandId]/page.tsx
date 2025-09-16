@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ApiService } from "@/lib/services/ApiServices";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import React from "react";
 
 export default async function BrandDetails({
@@ -11,6 +12,9 @@ export default async function BrandDetails({
 }) {
   const { brandId } = await params;
   const brand = await ApiService.getSingleBrand(brandId);
+  if (!brand?.data) {
+    notFound();
+  }
   const brandData = brand.data;
   return (
     <>
