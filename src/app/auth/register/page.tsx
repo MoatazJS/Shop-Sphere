@@ -50,7 +50,7 @@ export default function SignupForm() {
     } catch (error) {
       form.setError("root", {
         type: "server",
-        message: "Something went wrong. Please try again later.",
+        message: error + "Something went wrong. Please try again later.",
       });
     }
   }
