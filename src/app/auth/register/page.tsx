@@ -19,12 +19,11 @@ import {
   registerFormSchema,
   registerFormValues,
 } from "@/lib/validations/authSchemas";
-
-function onSubmit(values: registerFormValues) {
-  console.log(values);
-}
+import { ApiService } from "@/lib/services/ApiServices";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -35,6 +34,26 @@ export default function SignupForm() {
       phone: "",
     },
   });
+
+  async function onSubmit(values: registerFormValues) {
+    try {
+      const res = await ApiService.registerApi(values);
+
+      if (res?.message === "success") {
+        router.push("/auth/login");
+      } else {
+        form.setError("root", {
+          type: "server",
+          message: "Registration failed",
+        });
+      }
+    } catch (error) {
+      form.setError("root", {
+        type: "server",
+        message: "Something went wrong. Please try again later.",
+      });
+    }
+  }
 
   return (
     <section className="flex items-center justify-center min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
@@ -48,7 +67,11 @@ export default function SignupForm() {
             Create your account
           </p>
         </div>
-
+        {form.formState.errors.root && (
+          <p className="text-red-500 text-sm">
+            {form.formState.errors.root.message}
+          </p>
+        )}
         {/* Form */}
         <Form {...form}>
           <form

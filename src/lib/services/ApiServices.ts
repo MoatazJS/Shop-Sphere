@@ -6,6 +6,7 @@ import {
   SingleCategoryResponse,
   SingleProductResponse,
 } from "../interfaces/interface";
+import { registerFormValues } from "../validations/authSchemas";
 
 class ApiServices {
   baseURL = "https://ecommerce.routemisr.com/api/v1/";
@@ -68,6 +69,25 @@ class ApiServices {
     });
     if (!res) {
       throw new Error("Failed to login");
+    }
+    return res.json();
+  }
+  async registerApi(values: registerFormValues) {
+    const res = await fetch(this.baseURL + `auth/signup`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: values.username,
+        email: values.email,
+        password: values.password,
+        rePassword: values.repassword,
+        phone: values.phone,
+      }),
+      method: "post",
+    });
+    if (!res) {
+      throw new Error("Failed to register");
     }
     return res.json();
   }
