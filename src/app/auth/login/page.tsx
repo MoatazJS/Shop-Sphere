@@ -16,17 +16,12 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import {
+  loginFormSchema,
+  LoginFormValues,
+} from "@/lib/validations/authSchemas";
 
-const formSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
-});
-
-async function onSubmit(values: any) {
+async function onSubmit(values: LoginFormValues) {
   const response = await signIn("credentials", {
     email: values.email,
     password: values.password,
@@ -35,8 +30,8 @@ async function onSubmit(values: any) {
 }
 
 export default function LoginForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof loginFormSchema>>({
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -91,7 +86,10 @@ export default function LoginForm() {
               )}
             />
 
-            <Button type="submit" className="w-full cursor-pointer">
+            <Button
+              type="submit"
+              className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600"
+            >
               Sign In
             </Button>
           </form>
