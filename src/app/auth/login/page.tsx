@@ -20,14 +20,8 @@ import {
   loginFormSchema,
   LoginFormValues,
 } from "@/lib/validations/authSchemas";
-
-async function onSubmit(values: LoginFormValues) {
-  const response = await signIn("credentials", {
-    email: values.email,
-    password: values.password,
-  });
-  console.log(response);
-}
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function LoginForm() {
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -37,6 +31,27 @@ export default function LoginForm() {
       password: "",
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  async function onSubmit(values: LoginFormValues) {
+    setIsLoading(true);
+    const response = await signIn("credentials", {
+      redirect: false,
+      email: values.email,
+      password: values.password,
+    });
+
+    if (response?.ok) {
+      router.push("/products");
+    } else {
+      form.setError("password", {
+        type: "manual",
+        message: "Invalid email or password",
+      });
+      setIsLoading(false);
+    }
+  }
 
   return (
     <section className="flex items-center justify-center min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
@@ -87,6 +102,7 @@ export default function LoginForm() {
             />
 
             <Button
+              disabled={isLoading}
               type="submit"
               className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600"
             >
