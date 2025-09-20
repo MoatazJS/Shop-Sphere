@@ -7,7 +7,7 @@ export default async function DetailsPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params; // ✅ await params
+  const { id } = await params;
   const res = await ApiService.getOneProduct(id);
   if (!res?.data) {
     notFound();

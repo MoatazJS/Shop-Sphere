@@ -55,6 +55,22 @@ class ApiServices {
     }
     return res.json();
   }
+  async LoginApi(email: string, password: string) {
+    const res = await fetch(this.baseURL + "auth/signin", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+      method: "post",
+    });
+    if (!res) {
+      throw new Error("Failed to login");
+    }
+    return res.json();
+  }
 }
 
 export const ApiService = new ApiServices();
