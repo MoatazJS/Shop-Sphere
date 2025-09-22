@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { ShoppingCart, User, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <nav className="bg-white text-gray-900 shadow-md ">
@@ -34,18 +36,22 @@ export function Navbar() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-4">
-          <Link
-            href="/auth/login"
-            className="hover:text-orange-500 hidden md:inline"
-          >
-            Login
-          </Link>
-          <Link
-            href="/auth/register"
-            className="hover:text-orange-500 hidden md:inline"
-          >
-            Signup
-          </Link>
+          {!session && (
+            <Link
+              href="/auth/login"
+              className="hover:text-orange-500 hidden md:inline"
+            >
+              Login
+            </Link>
+          )}
+          {!session && (
+            <Link
+              href="/auth/register"
+              className="hover:text-orange-500 hidden md:inline"
+            >
+              Signup
+            </Link>
+          )}
           <Button
             variant="ghost"
             size="icon"

@@ -6,7 +6,6 @@ import Link from "next/link";
 
 import React from "react";
 const products: ProductsResponse = await ApiService.getAllProducts();
-console.log(products);
 export default function page() {
   return (
     <>

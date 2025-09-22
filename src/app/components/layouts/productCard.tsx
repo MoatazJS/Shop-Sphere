@@ -2,9 +2,8 @@ import React from "react";
 import { ProductsProps } from "@/lib/interfaces/interface";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import AddToCartBtn from "./AddToCartBtn";
 
 export default function ProductCard({ products }: ProductsProps) {
   return (
@@ -48,9 +47,7 @@ export default function ProductCard({ products }: ProductsProps) {
           </Link>
           {/* Footer */}
           <CardFooter className="mt-auto">
-            <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
-              <ShoppingCart /> Add to Cart
-            </Button>
+            <AddToCartBtn productId={product._id} />
           </CardFooter>
         </Card>
       ))}

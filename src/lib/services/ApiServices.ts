@@ -1,3 +1,4 @@
+import { getSession } from "next-auth/react";
 import {
   BrandsResponse,
   CategoriesResponse,
@@ -10,6 +11,16 @@ import { registerFormValues } from "../validations/authSchemas";
 
 class ApiServices {
   baseURL = "https://ecommerce.routemisr.com/";
+  private async getAuthHeaders() {
+    const session = await getSession();
+    if (!session?.accessToken) {
+      throw new Error("No token found, user not logged in");
+    }
+    return {
+      "Content-Type": "application/json",
+      token: session.accessToken,
+    };
+  }
   async getAllCategories(): Promise<CategoriesResponse> {
     const res = await fetch(this.baseURL + "api/v1/categories");
     if (!res) {
@@ -89,6 +100,37 @@ class ApiServices {
     if (!res) {
       throw new Error("Failed to register");
     }
+    return res.json();
+  }
+  async addToCart(productId: string) {
+    const headers = await this.getAuthHeaders();
+
+    const res = await fetch(this.baseURL + "api/v1/cart", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ productId }),
+    });
+
+    if (!res.ok) {
+      const errorBody = await res.json().catch(() => ({}));
+      throw new Error(errorBody.message || "Failed to add to cart");
+    }
+    return res.json();
+  }
+  async getUserCart() {
+    const headers = await this.getAuthHeaders();
+
+    const res = await fetch(this.baseURL + "api/v1/cart", {
+      method: "GET",
+      headers: headers,
+    });
+
+    if (!res.ok) {
+      const errorBody = await res.json().catch(() => ({}));
+      console.error("Get user cart failed:", res.status, errorBody);
+      throw new Error(errorBody.message || "Failed to get user cart");
+    }
+
     return res.json();
   }
 }
