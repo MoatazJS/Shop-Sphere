@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ShoppingCart, User, Search, Menu, X } from "lucide-react";
+import { ShoppingCart, User, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Navbar() {
@@ -34,13 +34,18 @@ export function Navbar() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-700 hover:text-orange-500"
+          <Link
+            href="/auth/login"
+            className="hover:text-orange-500 hidden md:inline"
           >
-            <Search />
-          </Button>
+            Login
+          </Link>
+          <Link
+            href="/auth/register"
+            className="hover:text-orange-500 hidden md:inline"
+          >
+            Signup
+          </Link>
           <Button
             variant="ghost"
             size="icon"
@@ -64,7 +69,7 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-gray-700"
+            className="md:hidden text-gray-700 cursor-pointer"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -82,6 +87,12 @@ export function Navbar() {
           </Link>
           <Link href="/categories" className="block hover:text-orange-400">
             Categories
+          </Link>
+          <Link href="/auth/login" className="block hover:text-orange-500">
+            Login
+          </Link>
+          <Link href="/auth/register" className="block hover:text-orange-500">
+            Signup
           </Link>
         </div>
       )}

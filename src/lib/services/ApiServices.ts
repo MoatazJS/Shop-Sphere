@@ -9,9 +9,9 @@ import {
 import { registerFormValues } from "../validations/authSchemas";
 
 class ApiServices {
-  baseURL = "https://ecommerce.routemisr.com/api/v1/";
+  baseURL = "https://ecommerce.routemisr.com/";
   async getAllCategories(): Promise<CategoriesResponse> {
-    const res = await fetch(this.baseURL + "categories");
+    const res = await fetch(this.baseURL + "api/v1/categories");
     if (!res) {
       throw new Error("Failed to get categories");
     }
@@ -19,7 +19,7 @@ class ApiServices {
   }
 
   async getOneCategory(categoryId: string): Promise<SingleCategoryResponse> {
-    const res = await fetch(this.baseURL + `categories/${categoryId}`);
+    const res = await fetch(this.baseURL + `api/v1/categories/${categoryId}`);
     if (!res) {
       throw new Error("Failed to fetch category");
     }
@@ -27,7 +27,7 @@ class ApiServices {
   }
 
   async getAllProducts(): Promise<ProductsResponse> {
-    const res = await fetch(this.baseURL + "products");
+    const res = await fetch(this.baseURL + "api/v1/products");
     if (!res) {
       throw new Error("Failed to get products");
     }
@@ -35,7 +35,7 @@ class ApiServices {
   }
 
   async getAllBrands(): Promise<BrandsResponse> {
-    const res = await fetch(this.baseURL + "brands");
+    const res = await fetch(this.baseURL + "api/v1/brands");
     if (!res) {
       throw new Error("Failed to get brands");
     }
@@ -43,21 +43,21 @@ class ApiServices {
   }
 
   async getOneProduct(id: string): Promise<SingleProductResponse> {
-    const res = await fetch(this.baseURL + `products/${id}`);
+    const res = await fetch(this.baseURL + `api/v1/products/${id}`);
     if (!res) {
       throw new Error("Failed to get product details");
     }
     return res.json();
   }
   async getSingleBrand(brandId: string): Promise<SingleBrandResponse> {
-    const res = await fetch(this.baseURL + `brands/${brandId}`);
+    const res = await fetch(this.baseURL + `api/v1/brands/${brandId}`);
     if (!res) {
       throw new Error("Failed to get brand details");
     }
     return res.json();
   }
   async LoginApi(email: string, password: string) {
-    const res = await fetch(this.baseURL + "auth/signin", {
+    const res = await fetch(this.baseURL + "api/v1/auth/signin", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -73,7 +73,7 @@ class ApiServices {
     return res.json();
   }
   async registerApi(values: registerFormValues) {
-    const res = await fetch(this.baseURL + `auth/signup`, {
+    const res = await fetch(this.baseURL + `api/v1/auth/signup`, {
       headers: {
         "Content-Type": "application/json",
       },
