@@ -130,3 +130,41 @@ export interface SingleBrandResponse {
 export interface AddtoCartProps {
   productId: string;
 }
+
+export interface CartResponseData {
+  products: CartProduct[];
+  totalCartPrice: number;
+  numOfCartItems: number;
+}
+
+export interface GetCartResponse {
+  status: string;
+  numOfCartItems: number;
+  cartId: string;
+  data: CartData;
+}
+export interface CartProduct {
+  _id: string;
+  product: {
+    _id: string;
+    title: string;
+    imageCover: string;
+    price: number;
+  };
+  count: number;
+  price: number;
+}
+
+export interface CartData {
+  _id: string;
+  cartOwner: string;
+  products: CartProduct[];
+  totalCartPrice: number;
+}
+
+export interface CartResponse {
+  status: string;
+  numOfCartItems: number;
+  cartId: string;
+  data: CartData;
+}

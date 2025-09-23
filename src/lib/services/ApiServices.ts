@@ -6,6 +6,7 @@ import {
   SingleBrandResponse,
   SingleCategoryResponse,
   SingleProductResponse,
+  CartResponse,
 } from "../interfaces/interface";
 import { registerFormValues } from "../validations/authSchemas";
 
@@ -131,6 +132,47 @@ class ApiServices {
       throw new Error(errorBody.message || "Failed to get user cart");
     }
 
+    return res.json();
+  }
+  async updateCartQuantity(productId: string, newCount: number) {
+    const headers = await this.getAuthHeaders();
+    const res = await fetch(this.baseURL + `api/v1/cart/${productId}`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify({ count: newCount }),
+    });
+    if (!res.ok) {
+      const errorBody = await res.json().catch(() => ({}));
+      throw new Error(errorBody.message || "Failed to update cart quantity");
+    }
+    return res.json();
+  }
+
+  async removeCartItem(cartItemId: string) {
+    const headers = await this.getAuthHeaders();
+    const res = await fetch(this.baseURL + `api/v1/cart/${cartItemId}`, {
+      method: "DELETE",
+      headers,
+    });
+    if (!res.ok) {
+      const errorBody = await res.json().catch(() => ({}));
+      console.error("Remove cart item failed:", res.status, errorBody);
+      throw new Error(errorBody.message || "Failed to remove cart item");
+    }
+    return res.json();
+  }
+  async clearCart(): Promise<CartResponse> {
+    const session = await getSession();
+    if (!session?.accessToken) throw new Error("Not authenticated");
+
+    const res = await fetch(this.baseURL + "cart", {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+    });
+
+    if (!res.ok) throw new Error("Failed to clear cart");
     return res.json();
   }
 }

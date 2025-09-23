@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
-
+  console.log(session?.accessToken);
   return (
     <nav className="bg-white text-gray-900 shadow-md ">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
@@ -55,21 +55,23 @@ export function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            className="text-gray-700 hover:text-orange-500"
+            className="text-gray-700 hover:text-orange-500 cursor-pointer"
           >
             <User />
           </Button>
           <div className="relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-gray-700 hover:text-orange-500"
-            >
-              <ShoppingCart />
-            </Button>
-            <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full px-1">
-              2
-            </span>
+            <Link href={"/cart"}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-gray-700 hover:text-orange-500 cursor-pointer"
+              >
+                <ShoppingCart />
+              </Button>
+              <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full px-1">
+                2
+              </span>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
