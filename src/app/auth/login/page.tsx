@@ -117,6 +117,15 @@ export default function LoginForm() {
             Sign up
           </Link>
         </p>
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Forgot your password?{" "}
+          <Link
+            href="/auth/forgot-password"
+            className="text-blue-600 hover:underline"
+          >
+            click here.
+          </Link>
+        </p>
       </div>
     </section>
   );

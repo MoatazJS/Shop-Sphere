@@ -1,17 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ShoppingCart, User, Menu, X, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Mobile menu
+  const [userMenuOpen, setUserMenuOpen] = useState(false); // User dropdown
   const { data: session } = useSession();
-  console.log(session?.accessToken);
+
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <nav className="bg-white text-gray-900 shadow-md ">
+    <nav className="bg-white text-gray-900 shadow-md relative">
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
         {/* Logo + Brand */}
         <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
@@ -35,30 +54,55 @@ export function Navbar() {
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 relative">
+          {/* Desktop Login/Signup */}
           {!session && (
-            <Link
-              href="/auth/login"
-              className="hover:text-orange-500 hidden md:inline"
-            >
-              Login
-            </Link>
+            <>
+              <Link
+                href="/auth/login"
+                className="hover:text-orange-500 hidden md:inline"
+              >
+                Login
+              </Link>
+              <Link
+                href="/auth/register"
+                className="hover:text-orange-500 hidden md:inline"
+              >
+                Signup
+              </Link>
+            </>
           )}
-          {!session && (
-            <Link
-              href="/auth/register"
-              className="hover:text-orange-500 hidden md:inline"
-            >
-              Signup
-            </Link>
+
+          {/* User dropdown */}
+          {session && (
+            <div ref={userMenuRef} className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-gray-700 hover:text-orange-500 cursor-pointer"
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+              >
+                <User />
+              </Button>
+
+              {/* Dropdown Menu */}
+              {userMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
+                  <div className="px-4 py-2 text-orange-500  border-b">
+                    Welcome, {session.user.name}
+                  </div>
+                  <Link
+                    href="/auth/forgot-password"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
+              )}
+            </div>
           )}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-700 hover:text-orange-500 cursor-pointer"
-          >
-            <User />
-          </Button>
+
+          {/* Wishlist */}
           <Link href={"/wishlist"}>
             <Button
               variant="ghost"
@@ -68,6 +112,8 @@ export function Navbar() {
               <Star />
             </Button>
           </Link>
+
+          {/* Cart */}
           <div className="relative">
             <Link href={"/cart"}>
               <Button
@@ -105,12 +151,35 @@ export function Navbar() {
           <Link href="/categories" className="block hover:text-orange-400">
             Categories
           </Link>
-          <Link href="/auth/login" className="block hover:text-orange-500">
-            Login
-          </Link>
-          <Link href="/auth/register" className="block hover:text-orange-500">
-            Signup
-          </Link>
+
+          {!session && (
+            <>
+              <Link href="/auth/login" className="block hover:text-orange-500">
+                Login
+              </Link>
+              <Link
+                href="/auth/register"
+                className="block hover:text-orange-500"
+              >
+                Signup
+              </Link>
+            </>
+          )}
+
+          {/* User menu on mobile */}
+          {session && (
+            <div className="border-t border-gray-700 pt-2">
+              <div className="px-2 py-1 text-orange-400">
+                Welcome, {session.user.name}
+              </div>
+              <Link
+                href="/auth/forgot-password"
+                className="block px-2 py-1 hover:text-orange-300"
+              >
+                Forgot Password?
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </nav>

@@ -219,6 +219,51 @@ class ApiServices {
     }
     return res.json();
   }
+
+  async sendResetCode(email: string) {
+    const res = await fetch(`${this.baseURL}api/v1/auth/forgotPasswords`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Failed to send reset code");
+    }
+
+    return res.json();
+  }
+
+  async verifyResetCode(email: string, code: string) {
+    const res = await fetch(`${this.baseURL}api/v1/auth/verifyResetCode`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, resetCode: code }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Invalid reset code");
+    }
+
+    return res.json();
+  }
+
+  async resetPassword(email: string, newPassword: string) {
+    const res = await fetch(`${this.baseURL}api/v1/auth/resetPassword`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, newPassword }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Failed to reset password");
+    }
+
+    return res.json();
+  }
 }
 
 export const ApiService = new ApiServices();
