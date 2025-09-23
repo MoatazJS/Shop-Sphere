@@ -37,7 +37,12 @@ export default function CartPage() {
   async function handleClearCart() {
     try {
       const cleared = await ApiService.clearCart();
-      setCart(cleared);
+      // if cleared cart doesn't return products, reset to null to show empty state
+      if (!cleared.data || !cleared.data.products?.length) {
+        setCart(null);
+      } else {
+        setCart(cleared);
+      }
     } catch (err) {
       console.error("Clear cart error:", err);
     }
@@ -102,7 +107,7 @@ export default function CartPage() {
     return <FullHeightMessage>{error}</FullHeightMessage>;
   }
 
-  if (!cart || cart.numOfCartItems === 0) {
+  if (!cart || !cart.data?.products?.length || cart.numOfCartItems === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center text-center">
         <h2 className="text-2xl font-bold text-blue-800">Your cart is empty</h2>

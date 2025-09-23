@@ -165,14 +165,13 @@ class ApiServices {
     return res.json();
   }
   async clearCart(): Promise<CartResponse> {
+    const headers = await this.getAuthHeaders();
     const session = await getSession();
     if (!session?.accessToken) throw new Error("Not authenticated");
 
-    const res = await fetch(this.baseURL + "cart", {
+    const res = await fetch(this.baseURL + "api/v1/cart", {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
+      headers,
     });
 
     if (!res.ok) throw new Error("Failed to clear cart");
@@ -180,7 +179,7 @@ class ApiServices {
   }
   async addToWishlist(productId: string): Promise<AddToWishlistResponse> {
     const headers = await this.getAuthHeaders();
-    const res = await fetch(`${this.baseURL}/wishlist`, {
+    const res = await fetch(`${this.baseURL}api/v1/wishlist`, {
       method: "POST",
       headers,
       body: JSON.stringify({ productId }),
@@ -196,7 +195,7 @@ class ApiServices {
     productId: string
   ): Promise<RemoveFromWishlistResponse> {
     const headers = await this.getAuthHeaders();
-    const res = await fetch(`${this.baseURL}/wishlist`, {
+    const res = await fetch(`${this.baseURL}api/v1/wishlist/${productId}`, {
       method: "DELETE",
       headers,
       body: JSON.stringify({ productId }),
@@ -210,7 +209,7 @@ class ApiServices {
 
   async getUserWishlist(): Promise<WishlistResponse> {
     const headers = await this.getAuthHeaders();
-    const res = await fetch(`${this.baseURL}/wishlist`, {
+    const res = await fetch(`${this.baseURL}api/v1/wishlist`, {
       method: "GET",
       headers,
     });

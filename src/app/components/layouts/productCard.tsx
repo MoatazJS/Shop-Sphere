@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import AddToCartBtn from "./AddToCartBtn";
+import WishlistButton from "./WishListBtn";
 
 export default function ProductCard({ products }: ProductsProps) {
   return (
@@ -23,6 +24,7 @@ export default function ProductCard({ products }: ProductsProps) {
                 fill
                 className="object-contain p-4"
               />
+              <WishlistButton productId={product._id} />
             </div>
 
             {/* Details */}

@@ -192,7 +192,7 @@ export interface WishlistItem {
 export interface WishlistResponse {
   status: string;
   count: number;
-  data: WishlistItem[];
+  wdata: WishlistItem[];
 }
 
 export interface AddToWishlistResponse {
@@ -206,4 +206,53 @@ export interface RemoveFromWishlistResponse {
   status: string;
   message: string;
   data: WishlistItem[];
+}
+// Wishlist product brand
+export interface WishlistBrand {
+  _id: string;
+  name: string;
+  slug: string;
+  image: string;
+}
+
+// Wishlist product category
+export interface WishlistCategory {
+  _id: string;
+  name: string;
+  slug: string;
+  image: string;
+}
+
+// Wishlist product subcategory
+export interface WishlistSubCategory {
+  _id: string;
+  name: string;
+  slug: string;
+  category: string;
+}
+
+// Wishlist product
+export interface WishlistProduct {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  quantity: number;
+  price: number;
+  imageCover: string;
+  category: WishlistCategory;
+  brand: WishlistBrand;
+  ratingsAverage: number;
+  ratingsQuantity: number;
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+// Wishlist API response
+export interface WishlistResponse {
+  status: string;
+  count: number;
+  data: WishlistProduct[];
 }

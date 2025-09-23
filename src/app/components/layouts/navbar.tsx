@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ShoppingCart, User, Menu, X } from "lucide-react";
+import { ShoppingCart, User, Menu, X, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 
@@ -59,6 +59,15 @@ export function Navbar() {
           >
             <User />
           </Button>
+          <Link href={"/wishlist"}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gray-700 hover:text-orange-500 cursor-pointer"
+            >
+              <Star />
+            </Button>
+          </Link>
           <div className="relative">
             <Link href={"/cart"}>
               <Button

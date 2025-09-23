@@ -29,9 +29,13 @@ export default function WishlistButton({ productId }: { productId: string }) {
 
   return (
     <button
-      onClick={toggleWishlist}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleWishlist();
+      }}
       disabled={loading}
-      className="absolute top-2 right-2 p-2 rounded-full bg-white/80 hover:bg-white shadow-md"
+      className="absolute top-2 right-2 p-2 rounded-full bg-white/80 hover:bg-white shadow-md cursor-pointer"
     >
       <Star
         className={`w-6 h-6 transition ${
