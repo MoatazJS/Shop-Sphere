@@ -7,6 +7,9 @@ import {
   SingleCategoryResponse,
   SingleProductResponse,
   CartResponse,
+  WishlistResponse,
+  AddToWishlistResponse,
+  RemoveFromWishlistResponse,
 } from "../interfaces/interface";
 import { registerFormValues } from "../validations/authSchemas";
 
@@ -173,6 +176,48 @@ class ApiServices {
     });
 
     if (!res.ok) throw new Error("Failed to clear cart");
+    return res.json();
+  }
+  async addToWishlist(productId: string): Promise<AddToWishlistResponse> {
+    const headers = await this.getAuthHeaders();
+    const res = await fetch(`${this.baseURL}/wishlist`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ productId }),
+    });
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}));
+      throw new Error(errBody.message || "Failed to add to wishlist");
+    }
+    return res.json();
+  }
+
+  async removeFromWishlist(
+    productId: string
+  ): Promise<RemoveFromWishlistResponse> {
+    const headers = await this.getAuthHeaders();
+    const res = await fetch(`${this.baseURL}/wishlist`, {
+      method: "DELETE",
+      headers,
+      body: JSON.stringify({ productId }),
+    });
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}));
+      throw new Error(errBody.message || "Failed to remove from wishlist");
+    }
+    return res.json();
+  }
+
+  async getUserWishlist(): Promise<WishlistResponse> {
+    const headers = await this.getAuthHeaders();
+    const res = await fetch(`${this.baseURL}/wishlist`, {
+      method: "GET",
+      headers,
+    });
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}));
+      throw new Error(errBody.message || "Failed to fetch wishlist");
+    }
     return res.json();
   }
 }

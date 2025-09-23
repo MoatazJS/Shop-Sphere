@@ -168,3 +168,42 @@ export interface CartResponse {
   cartId: string;
   data: CartData;
 }
+
+export interface WishlistItem {
+  _id: string;
+  title: string;
+  imageCover: string;
+  price: number;
+  description?: string;
+  category?: {
+    _id: string;
+    name: string;
+    slug: string;
+  };
+  brand?: {
+    _id: string;
+    name: string;
+    slug: string;
+  };
+  ratingsAverage?: number;
+  id: string;
+}
+
+export interface WishlistResponse {
+  status: string;
+  count: number;
+  data: WishlistItem[];
+}
+
+export interface AddToWishlistResponse {
+  status: string;
+  message: string;
+  data: WishlistItem[];
+}
+
+// DELETE /wishlist (remove product) response
+export interface RemoveFromWishlistResponse {
+  status: string;
+  message: string;
+  data: WishlistItem[];
+}
