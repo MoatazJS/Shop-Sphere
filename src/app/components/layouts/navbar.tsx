@@ -5,14 +5,47 @@ import { useState, useRef, useEffect } from "react";
 import { ShoppingCart, User, Menu, X, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
+import { ApiService } from "@/lib/services/ApiServices";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/redux/store";
+import { setCartItems } from "@/redux/slices/cartSlice";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false); // Mobile menu
   const [userMenuOpen, setUserMenuOpen] = useState(false); // User dropdown
   const { data: session } = useSession();
-
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  console.log(session?.accessToken);
+  useEffect(() => {
+    let mounted = true;
 
+    const fetchCart = async () => {
+      if (session) {
+        try {
+          const cart = await ApiService.getUserCart();
+          console.log("Cart response:", cart); // just to verify
+          if (mounted) {
+            dispatch(setCartItems(cart.numOfCartItems ?? 0));
+          }
+        } catch (err) {
+          console.error("Failed to fetch cart:", err);
+          if (mounted) dispatch(setCartItems(0));
+        }
+      } else {
+        if (mounted) dispatch(setCartItems(0));
+      }
+    };
+
+    fetchCart();
+
+    return () => {
+      mounted = false;
+    };
+  }, [session, dispatch]);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   // Close dropdown if clicked outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -123,9 +156,11 @@ export function Navbar() {
               >
                 <ShoppingCart />
               </Button>
-              <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full px-1">
-                2
-              </span>
+              {mounted && (
+                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full px-1">
+                  {cartItems}
+                </span>
+              )}
             </Link>
           </div>
 
