@@ -20,8 +20,6 @@ export default async function DetailsPage({
     console.error("Product not found:", id);
     notFound();
   }
-  // const res = await ApiService.getOneProduct(id);
-  // if (!res?.data) notFound();
 
   const product = res.data;
   return (

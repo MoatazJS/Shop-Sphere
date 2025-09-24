@@ -129,7 +129,7 @@ export default function CheckoutPage() {
           shippingAddress,
           `${process.env.NEXT_PUBLIC_BASE_URL}/order-success`
         );
-
+        console.log("Stripe checkout session response:", res);
         if (res?.session?.url) {
           window.location.href = res.session.url;
         } else {
