@@ -21,13 +21,15 @@ import {
   AddressFormValues,
 } from "@/lib/interfaces/interface";
 import { useRouter } from "next/navigation";
-
+import { useDispatch } from "react-redux";
+import { setCartItems } from "@/redux/slices/cartSlice";
 interface CheckoutFormValues {
   addressId: string;
   paymentMethod: "COD" | "CARD";
 }
 
 export default function CheckoutPage() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [cart, setCart] = useState<CheckoutCartResponse | null>(null);
   const [addresses, setAddresses] = useState<CheckoutAddress[]>([]);
@@ -111,13 +113,22 @@ export default function CheckoutPage() {
 
         if (res) {
           alert("✅ Cash order placed successfully!");
-          router.push("/cart");
+          dispatch(setCartItems(0));
+          router.push(
+            `/order-success?orderId=${
+              res.data._id
+            }&address=${encodeURIComponent(
+              res.data.shippingAddress.details +
+                ", " +
+                res.data.shippingAddress.city
+            )}&price=${res.data.totalOrderPrice}`
+          );
         }
       } else if (data.paymentMethod === "CARD") {
         const res = await ApiService.createCheckoutSession(
           cart.cartId,
           shippingAddress,
-          "http://localhost:3000" // return URL after Stripe
+          `${process.env.NEXT_PUBLIC_BASE_URL}/order-success`
         );
 
         if (res?.session?.url) {
