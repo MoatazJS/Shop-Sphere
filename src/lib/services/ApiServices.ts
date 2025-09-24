@@ -10,6 +10,7 @@ import {
   WishlistResponse,
   AddToWishlistResponse,
   RemoveFromWishlistResponse,
+  CheckoutAddress,
 } from "../interfaces/interface";
 import { registerFormValues } from "../validations/authSchemas";
 
@@ -260,6 +261,70 @@ class ApiServices {
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || "Failed to reset password");
+    }
+
+    return res.json();
+  }
+
+  async addUserAddress(address: object) {
+    const headers = await this.getAuthHeaders();
+    const res = await fetch(`${this.baseURL}api/v1/addresses`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(address),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Failed to add new address");
+    }
+    console.log(address);
+    console.log(res);
+    return res.json();
+  }
+  // Get user addresses
+  async getAddresses(): Promise<CheckoutAddress[]> {
+    const headers = await this.getAuthHeaders();
+    const res = await fetch(`${this.baseURL}api/v1/addresses`, {
+      headers,
+    });
+    const data = await res.json();
+    return data.data;
+  }
+
+  async createCashOrder(cartId: string, shippingAddress: object) {
+    const headers = await this.getAuthHeaders();
+    const res = await fetch(`${this.baseURL}api/v1/orders/${cartId}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ shippingAddress }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Failed to create cash order");
+    }
+
+    return res.json();
+  }
+
+  async createCheckoutSession(
+    cartId: string,
+    shippingAddress: object,
+    returnUrl: string
+  ) {
+    const headers = await this.getAuthHeaders();
+    const res = await fetch(
+      `${this.baseURL}api/v1/orders/checkout-session/${cartId}?url=${returnUrl}`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ shippingAddress }),
+      }
+    );
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || "Failed to create checkout session");
     }
 
     return res.json();

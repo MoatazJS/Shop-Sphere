@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CartResponse } from "@/lib/interfaces/interface";
+import Link from "next/link";
 
 export default function CartPage() {
   const { data: session } = useSession();
@@ -219,9 +220,11 @@ export default function CartPage() {
             ${cart.data.totalCartPrice}
           </p>
         </div>
-        <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 text-lg font-semibold rounded-xl shadow-md">
-          Proceed to Checkout
-        </Button>
+        <Link href={"/checkout"}>
+          <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 text-lg font-semibold rounded-xl shadow-md">
+            Proceed to Checkout
+          </Button>
+        </Link>
       </div>
     </div>
   );

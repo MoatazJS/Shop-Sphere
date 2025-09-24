@@ -256,3 +256,36 @@ export interface WishlistResponse {
   count: number;
   data: WishlistProduct[];
 }
+export interface AddressFormValues {
+  name: string;
+  details: string;
+  phone: string;
+  city: string;
+}
+export interface CheckoutProduct {
+  _id: string;
+  title: string;
+  quantity: number;
+  price: number;
+  imageCover: string;
+}
+
+export interface CheckoutAddress {
+  _id: string;
+  name: string;
+  details: string;
+  phone: string;
+  city: string;
+}
+
+export interface CheckoutCartResponse {
+  cartId: string;
+  products: CheckoutProduct[];
+  totalCartPrice: number;
+}
+
+export interface PlaceOrderPayload {
+  cartId: string;
+  addressId: string;
+  paymentMethod: "COD" | "CARD"; // adjust if your API supports more
+}

@@ -25,7 +25,6 @@ export function Navbar() {
       if (session) {
         try {
           const cart = await ApiService.getUserCart();
-          console.log("Cart response:", cart); // just to verify
           if (mounted) {
             dispatch(setCartItems(cart.numOfCartItems ?? 0));
           }
@@ -44,6 +43,7 @@ export function Navbar() {
       mounted = false;
     };
   }, [session, dispatch]);
+
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   // Close dropdown if clicked outside
