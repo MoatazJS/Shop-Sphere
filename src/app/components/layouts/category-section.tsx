@@ -19,12 +19,12 @@ export function CategorySection({ categories }: CategorySectionProps) {
               className="hover:shadow-lg transition cursor-pointer"
             >
               <CardContent className="flex flex-col items-center justify-center py-8">
-                <div className="relative w-50 h-50">
+                <div className="relative w-full h-32 sm:h-40 md:h-48 overflow-hidden rounded-lg">
                   <Image
                     src={cat.image}
                     alt={cat.name}
                     fill
-                    className="object-contain"
+                    className="object-cover"
                   />
                 </div>
                 <p className="mt-2 font-medium">{cat.name}</p>
