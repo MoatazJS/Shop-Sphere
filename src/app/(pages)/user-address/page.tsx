@@ -24,7 +24,7 @@ export default function UserAddressPage() {
         const data = await ApiService.getAddresses();
         setAddresses(data);
       } catch (err) {
-        console.error("Failed to load addresses", err);
+        alert("Failed to load addresses" + { err });
       } finally {
         setLoading(false);
       }
@@ -38,7 +38,7 @@ export default function UserAddressPage() {
       await ApiService.deleteAddress(id);
       setAddresses((prev) => prev.filter((addr) => addr._id !== id));
     } catch (err) {
-      console.error("Delete failed", err);
+      alert("Delete failed" + { err });
       alert("Failed to delete address. Please try again.");
     }
   };

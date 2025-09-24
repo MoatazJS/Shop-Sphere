@@ -26,8 +26,7 @@ export default function NewAddressPage() {
       alert("Address added successfully!");
       reset();
     } catch (err) {
-      console.error(err);
-      alert("Failed to add address.");
+      alert("Failed to add address." + { err });
     } finally {
       setLoading(false);
     }

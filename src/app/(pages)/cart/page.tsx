@@ -26,7 +26,7 @@ export default function CartPage() {
         const response = await ApiService.getUserCart();
         setCart(response);
       } catch (err: unknown) {
-        console.error("Cart fetch error:", err);
+        alert("Cart fetch error:" + { err });
         setError("Failed to fetch cart");
       } finally {
         setIsLoading(false);
@@ -45,7 +45,7 @@ export default function CartPage() {
         setCart(cleared);
       }
     } catch (err) {
-      console.error("Clear cart error:", err);
+      alert("Clear cart error:" + { err });
     }
   }
 
@@ -58,7 +58,7 @@ export default function CartPage() {
       );
       setCart(updated);
     } catch (err) {
-      console.error("Increase error:", err);
+      alert("Increase error:" + { err });
     } finally {
       setLoadingItemId(null);
     }
@@ -75,7 +75,7 @@ export default function CartPage() {
         setCart(updated);
       }
     } catch (err) {
-      console.error("Decrease error:", err);
+      alert("Decrease error:" + { err });
     } finally {
       setLoadingItemId(null);
     }

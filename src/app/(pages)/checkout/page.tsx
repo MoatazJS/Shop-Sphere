@@ -64,7 +64,7 @@ export default function CheckoutPage() {
         setAddresses(addressData || []);
         if (addressData?.length) setValue("addressId", addressData[0]._id);
       } catch (err) {
-        console.error("Failed to fetch checkout data:", err);
+        alert("Failed to fetch checkout data:" + { err });
         setCart({ cartId: "", totalCartPrice: 0, products: [] });
         setAddresses([]);
       }
@@ -85,8 +85,7 @@ export default function CheckoutPage() {
       if (updatedAddresses?.length)
         setValue("addressId", updatedAddresses[0]._id);
     } catch (err) {
-      console.error(err);
-      alert("Failed to add address.");
+      alert("Failed to add address." + { err });
     }
   };
 
@@ -107,15 +106,17 @@ export default function CheckoutPage() {
           cart.cartId,
           shippingAddress
         );
-        console.log("Cash Order response:", res);
+
         alert("✅ Cash order placed successfully!");
+        if (res) {
+          alert("Checkout completed.");
+        }
       } else if (data.paymentMethod === "CARD") {
         const res = await ApiService.createCheckoutSession(
           cart.cartId,
           shippingAddress,
           "http://localhost:3000" // return URL after Stripe
         );
-        console.log("Checkout Session response:", res);
 
         if (res?.session?.url) {
           window.location.href = res.session.url;
@@ -124,8 +125,7 @@ export default function CheckoutPage() {
         }
       }
     } catch (err) {
-      console.error(err);
-      alert("❌ Failed to place order.");
+      alert("❌ Failed to place order." + { err });
     } finally {
       setLoading(false);
     }

@@ -26,7 +26,7 @@ export default function WishlistPage() {
         const response: WishlistResponse = await ApiService.getUserWishlist();
         setWishlist(response.data);
       } catch (err) {
-        console.error("Wishlist fetch error:", err);
+        alert("Wishlist fetch error:" + { err });
         setError("Failed to fetch wishlist");
       } finally {
         setIsLoading(false);

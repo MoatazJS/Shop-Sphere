@@ -14,7 +14,6 @@ export default async function DetailsPage({
   }
 
   const product = res.data;
-  console.log(product);
   return (
     <section className="max-w-5xl mx-auto p-6">
       {/* Layout: Image on the left, details on the right */}
