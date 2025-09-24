@@ -7,13 +7,15 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CartResponse } from "@/lib/interfaces/interface";
 import Link from "next/link";
-
+import { useDispatch } from "react-redux";
+import { setCartItems } from "@/redux/slices/cartSlice";
 export default function CartPage() {
   const { data: session } = useSession();
   const [cart, setCart] = useState<CartResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loadingItemId, setLoadingItemId] = useState<string | null>(null); // track which item is updating
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchCart() {
@@ -38,6 +40,7 @@ export default function CartPage() {
   async function handleClearCart() {
     try {
       const cleared = await ApiService.clearCart();
+      dispatch(setCartItems(0));
       // if cleared cart doesn't return products, reset to null to show empty state
       if (!cleared.data || !cleared.data.products?.length) {
         setCart(null);

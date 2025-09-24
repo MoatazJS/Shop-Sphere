@@ -6,12 +6,16 @@ import { AddtoCartProps } from "@/lib/interfaces/interface";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setCartItems } from "@/redux/slices/cartSlice";
+
 export default function AddToCartBtn({
   productId,
   productName,
 }: AddtoCartProps) {
   const { data: session } = useSession();
   const [loggedIn, setLoggedIn] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
     setLoggedIn(!!session?.accessToken);
   }, [session]);
@@ -27,6 +31,7 @@ export default function AddToCartBtn({
       toast.success(`${productName} added to cart successfully!`, {
         description: "You can review it in your cart.",
       });
+      dispatch(setCartItems(res.numOfCartItems ?? 0));
       setIsAddingToCart(false);
     } catch (err) {
       toast.error("Failed to add item to cart", {
