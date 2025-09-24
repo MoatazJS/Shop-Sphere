@@ -131,7 +131,7 @@ export function Navbar() {
                     Forgot Password?
                   </Link>
                   <Link
-                    href="/add-address"
+                    href="/user-address"
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Your Addresses

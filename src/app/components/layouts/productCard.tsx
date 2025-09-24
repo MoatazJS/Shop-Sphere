@@ -49,7 +49,7 @@ export default function ProductCard({ products }: ProductsProps) {
           </Link>
           {/* Footer */}
           <CardFooter className="mt-auto">
-            <AddToCartBtn productId={product._id} />
+            <AddToCartBtn productId={product._id} productName={product.title} />
           </CardFooter>
         </Card>
       ))}

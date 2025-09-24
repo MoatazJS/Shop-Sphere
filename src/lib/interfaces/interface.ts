@@ -129,6 +129,7 @@ export interface SingleBrandResponse {
 }
 export interface AddtoCartProps {
   productId: string;
+  productName: string;
 }
 
 export interface CartResponseData {
