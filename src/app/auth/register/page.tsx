@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -22,8 +23,12 @@ import {
 import { ApiService } from "@/lib/services/ApiServices";
 import { useRouter } from "next/navigation";
 
+import { toast } from "sonner";
+
 export default function SignupForm() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -36,22 +41,48 @@ export default function SignupForm() {
   });
 
   async function onSubmit(values: registerFormValues) {
+    setIsLoading(true);
     try {
       const res = await ApiService.registerApi(values);
 
-      if (res?.message === "success") {
+      if (res?.statusMsg === "success") {
+        toast.success("Account created 🎉", {
+          description: "You can now log in with your credentials.",
+        });
         router.push("/auth/login");
-      } else {
+      } else if (res?.statusMsg === "fail") {
+        // Use the API message directly
+        const errorMessage = res.message || "Registration failed";
+
+        toast.error(errorMessage); // show toast
         form.setError("root", {
           type: "server",
-          message: "Registration failed",
+          message: errorMessage, // show above the form
         });
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      let msg = "Something went wrong. Please try again later.";
+
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as { response?: { data?: { message?: string } } })
+          .response?.data?.message === "string"
+      ) {
+        msg = (error as { response: { data: { message: string } } }).response
+          .data.message;
+      } else if (error instanceof Error) {
+        msg = error.message;
+      }
+
+      toast.error(msg);
       form.setError("root", {
         type: "server",
-        message: error + "Something went wrong. Please try again later.",
+        message: msg,
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -67,12 +98,13 @@ export default function SignupForm() {
             Create your account
           </p>
         </div>
+
+        {/* Form */}
         {form.formState.errors.root && (
-          <p className="text-red-500 text-sm">
+          <p className="text-red-500 text-sm mb-4">
             {form.formState.errors.root.message}
           </p>
         )}
-        {/* Form */}
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -90,6 +122,7 @@ export default function SignupForm() {
                       type="email"
                       placeholder="example@example.com"
                       {...field}
+                      disabled={isLoading}
                     />
                   </FormControl>
                   <FormMessage />
@@ -109,6 +142,7 @@ export default function SignupForm() {
                       type="text"
                       placeholder="Enter your username"
                       {...field}
+                      disabled={isLoading}
                     />
                   </FormControl>
                   <FormMessage />
@@ -124,7 +158,12 @@ export default function SignupForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="********" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="********"
+                      {...field}
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -139,7 +178,12 @@ export default function SignupForm() {
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="********" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="********"
+                      {...field}
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,7 +198,12 @@ export default function SignupForm() {
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input type="tel" placeholder="0123456789" {...field} />
+                    <Input
+                      type="tel"
+                      placeholder="0123456789"
+                      {...field}
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -165,8 +214,9 @@ export default function SignupForm() {
             <Button
               type="submit"
               className="w-full bg-orange-500 hover:bg-orange-600 cursor-pointer"
+              disabled={isLoading}
             >
-              Sign Up
+              {isLoading ? "Signing up..." : "Sign Up"}
             </Button>
           </form>
         </Form>
@@ -174,7 +224,7 @@ export default function SignupForm() {
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link href="/login" className="text-blue-600 hover:underline">
+          <Link href="/auth/login" className="text-blue-600 hover:underline">
             Sign in
           </Link>
         </p>
