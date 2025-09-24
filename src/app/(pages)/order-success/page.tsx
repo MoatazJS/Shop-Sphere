@@ -1,30 +1,35 @@
-"use client";
+// app/order-success/page.tsx
 
-import { useSearchParams } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+export default function OrderSuccessPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const orderId = searchParams.orderId;
+  const address = searchParams.address;
+  const price = searchParams.price;
 
-export default function OrderSuccessPage() {
-  const searchParams = useSearchParams();
-
-  const orderId = searchParams.get("orderId");
-  const address = searchParams.get("address");
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <Card className="max-w-lg w-full shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-green-600 text-2xl">
-            🎉 Order Completed Successfully!
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
+      <div className="bg-white shadow-lg rounded-2xl p-8 max-w-md w-full text-center">
+        <h1 className="text-2xl font-bold text-green-600 mb-4">
+          🎉 Order Completed Successfully!
+        </h1>
+
+        <div className="space-y-2 text-gray-700">
           <p>
-            <strong>Order ID:</strong> {orderId}
+            <span className="font-semibold">Order ID:</span> {orderId ?? "N/A"}
           </p>
           <p>
-            <strong>Delivery Address:</strong> {address}
+            <span className="font-semibold">Delivery Address:</span>{" "}
+            {address ?? "Not provided"}
           </p>
-        </CardContent>
-      </Card>
+          <p>
+            <span className="font-semibold">Total Price:</span>{" "}
+            {price ? `$${price}` : "Not available"}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
