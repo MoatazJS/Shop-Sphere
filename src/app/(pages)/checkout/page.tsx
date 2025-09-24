@@ -112,7 +112,6 @@ export default function CheckoutPage() {
         );
 
         if (res) {
-          alert("✅ Cash order placed successfully!");
           dispatch(setCartItems(0));
           router.push(
             `/order-success?orderId=${
