@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSession } from "next-auth/react";
 import { AddressFormValues } from "@/lib/interfaces/interface";
 import { ApiService } from "@/lib/services/ApiServices";
+import Link from "next/link";
 
 export default function NewAddressPage() {
   const { data: session } = useSession();
@@ -92,12 +93,20 @@ export default function NewAddressPage() {
 
             <Button
               type="submit"
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold cursor-pointer"
               disabled={loading}
             >
               {loading ? "Adding..." : "Add Address"}
             </Button>
           </form>
+          <Link href="/user-address">
+            <Button
+              variant="secondary"
+              className="bg-blue-400 text-white hover:bg-blue-600 mt-4 mx-auto w-full cursor-pointer"
+            >
+              View My Addresses
+            </Button>
+          </Link>
         </CardContent>
       </Card>
     </div>

@@ -329,6 +329,19 @@ class ApiServices {
 
     return res.json();
   }
+  async deleteAddress(addressId: string) {
+    const headers = await this.getAuthHeaders();
+    const res = await fetch(`${this.baseURL}api/v1/addresses/${addressId}`, {
+      method: "DELETE",
+      headers,
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to delete address");
+    }
+
+    return res.json();
+  }
 }
 
 export const ApiService = new ApiServices();
