@@ -20,6 +20,7 @@ import {
   CartProduct,
   AddressFormValues,
 } from "@/lib/interfaces/interface";
+import { useRouter } from "next/navigation";
 
 interface CheckoutFormValues {
   addressId: string;
@@ -27,6 +28,7 @@ interface CheckoutFormValues {
 }
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const [cart, setCart] = useState<CheckoutCartResponse | null>(null);
   const [addresses, setAddresses] = useState<CheckoutAddress[]>([]);
   const [loading, setLoading] = useState(false);
@@ -107,9 +109,9 @@ export default function CheckoutPage() {
           shippingAddress
         );
 
-        alert("✅ Cash order placed successfully!");
         if (res) {
-          alert("Checkout completed.");
+          alert("✅ Cash order placed successfully!");
+          router.push("/cart");
         }
       } else if (data.paymentMethod === "CARD") {
         const res = await ApiService.createCheckoutSession(

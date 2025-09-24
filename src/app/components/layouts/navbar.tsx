@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { ShoppingCart, User, Menu, X, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { ApiService } from "@/lib/services/ApiServices";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -136,6 +136,16 @@ export function Navbar() {
                   >
                     Your Addresses
                   </Link>
+                  <button
+                    onClick={() =>
+                      signOut({
+                        callbackUrl: "/",
+                      })
+                    }
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Sign Out
+                  </button>
                 </div>
               )}
             </div>
@@ -205,6 +215,18 @@ export function Navbar() {
                 Signup
               </Link>
             </>
+          )}
+          {session && (
+            <button
+              onClick={() =>
+                signOut({
+                  callbackUrl: "/",
+                })
+              }
+              className="block w-full text-left hover:text-orange-400 cursor-pointer"
+            >
+              Sign Out
+            </button>
           )}
 
           {/* User menu on mobile */}
