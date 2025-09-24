@@ -32,7 +32,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/brand" className="hover:text-orange-400">
+              <Link href="/brands" className="hover:text-orange-400">
                 Brands
               </Link>
             </li>
