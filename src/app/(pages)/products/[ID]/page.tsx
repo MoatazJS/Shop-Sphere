@@ -2,16 +2,11 @@ import { ApiService } from "@/lib/services/ApiServices";
 import Image from "next/image";
 import React from "react";
 import { notFound } from "next/navigation";
-export default async function DetailsPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+export default async function DetailsPage({ params }: { params: { id: string } }) {
+  const { id } = params;
+
   const res = await ApiService.getOneProduct(id);
-  if (!res?.data) {
-    notFound();
-  }
+  if (!res?.data) notFound();
 
   const product = res.data;
   return (
